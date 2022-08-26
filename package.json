@@ -65,8 +65,8 @@
     "yaml": "^1.10.2"
   },
   "scripts": {
-    "buildTailwind": "npx tailwindcss -i ./input.css -o ./output.css --watch",
-    "buildTailwindOnce": "npx tailwindcss -i ./input.css -o ./output.css"
+    "buildTailwind": "npx tailwindcss -i ./input.css -o ./dist/output.css --watch",
+    "buildTailwindOnce": "npx tailwindcss -i ./input.css -o ./dist/output.css"
   },
   "repository": {
     "type": "git",
