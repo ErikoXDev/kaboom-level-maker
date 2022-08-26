@@ -1,17 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="m-0 h-100">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/bc069c4bd8.js" crossorigin="anonymous"></script>
 </head>
-<body>
-  <div class="">
+<style>
+  .dragme {
+    z-index: 10000;
+  }
+
+  :root {
+    --grid-cols: 1;
+    --grid-rows: 1;
+  }
+
+  .grid {
+    width: fit-content;
+    display: grid;
+    gap: 0;
+    grid-template-rows: repeat(var(--grid-rows), 1fr);
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+  }
+
+  .inner {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  }
+
+  .cell {
+    width: 100%;
+    height: 100%;
+    padding: 1.5em;
+    background-color: white;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering:optimizeSpeed;             /* Legal fallback */
+    image-rendering:-moz-crisp-edges;          /* Firefox        */
+    image-rendering:-o-crisp-edges;            /* Opera          */
+    image-rendering:-webkit-optimize-contrast; /* Safari         */
+    image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+    image-rendering:crisp-edges;               /* CSS4 Proposed  */
+    image-rendering:pixelated;                 /* CSS4 Proposed  */
+    -ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+  .cell:hover {
+    filter:brightness(120%);
+  }
+  .cursor {
+    cursor: pointer;
+  }
+
+  .imgcell {
+    width: 30px;
+    height: auto;
+  }
+  
+
+  .dogrid > img {
+    border: 1px solid #ddd
+  }
+  .dogrid > div > .cell {
+    border: 1px solid #ddd;
+  }
+
+  .pixelated {
+    image-rendering:optimizeSpeed;             /* Legal fallback */
+    image-rendering:-moz-crisp-edges;          /* Firefox        */
+    image-rendering:-o-crisp-edges;            /* Opera          */
+    image-rendering:-webkit-optimize-contrast; /* Safari         */
+    image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+    image-rendering:crisp-edges;               /* CSS4 Proposed  */
+    image-rendering:pixelated;                 /* CSS4 Proposed  */
+    -ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+  }
+</style>
+<body class="m-0 h-100 overflow-hidden">
+  <div class="d-flex gap-3 w-100 h-auto p-3 border-bottom position-absolute top-0 bg-light" style="z-index: 100;" id="_nav">
+    <div><!-- File button-->
+      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">File</button>
+      <ul class="dropdown-menu">
+        <li><div class="dropdown-item" onclick="resetMapHtml()">Reset Map</div></li>
+        <li><div class="dropdown-item">Export Map</div></li>
+        <li><label><div class="dropdown-item" onclick="loadSpriteSheet()">Load Spritesheet</div><input type="file" name="file" id="spriteSheetInput" onchange="loadSpriteSheet(this)" class="d-none" accept="image/png"></label></li>
+        
+      </ul>
+    </div>
+    <div><!-- File button-->
+      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Settings</button>
+      <ul class="dropdown-menu">
+        <li><div class="dropdown-item">joe mozilla</div></li>
+        <li><div class="dropdown-item">WIP</div></li>
+        <li><div class="dropdown-item">WIP</div></li>
+      </ul>
+    </div>
+    <div><!-- File button-->
+      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">View</button>
+      <ul class="dropdown-menu">
+        <li><div class="dropdown-item" onclick="view_toggleSpriteSheet(this,'spriteSheet')">Sprite Sheet ✅</div></li>
+        <li><div class="dropdown-item">WIP ✅</div></li>
+        <li><div class="dropdown-item">WIP ❌</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+    <div>
+      <div class="card border border-3 position-relative" id="gridd" style="left: 0; top: 0;">
+
+      </div>
+    </div>
     
+  </div>
+
+  <button class="btn btn-primary position-absolute bottom-0 end-0 m-4 p-2 " onclick="document.getElementById('gridd').classList.toggle('dogrid'); document.getElementById('imggrid').classList.toggle('dogrid')">Toggle Grid</button>
+
+  <!-- Windows here -->
+  <div class="dragme card w-25 h-25 position-absolute overflow-auto" style="right: 0; top: 50%" id="window_spriteSheet">
+    <div class="w-100 p-1 card-header text-primary fw-bold d-flex justify-content-between align-items-center" id="window_spriteSheetheader">
+      <div class="px-2">Sprite Sheet</div>
+    </div>
+    <div id="imggrid" class="grid">
+      <p class="p-2 text-primary">Load your spritesheet with File > Load Spritesheet</p>
+      
+    </div>
+    <canvas id="spriteSheetCanvas" class="d-none">
+
+    </canvas>
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-
+<script src="js/view.js"></script>
+<script src="js/drag.js"></script>
+<script src="js/map.js"></script>
 </html>
