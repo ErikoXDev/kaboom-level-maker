@@ -13,6 +13,10 @@
 </head>
 <style>
 
+  @font-face {
+    font-family: sinky;
+    src: url("sink.ttf");
+  }
   * {
     font-family: "Press Start 2P";
     font-size: 0.95em;
@@ -20,6 +24,11 @@
   }
   .dragme {
     z-index: 10000;
+  }
+
+  .sink {
+    font-family: "sinky", monospace !important;
+    font-size: 3em;
   }
 
   :root {
@@ -78,6 +87,7 @@
     height: auto;
   }
   
+  
 
   .dogrid > img {
     border: 1px solid black
@@ -122,7 +132,8 @@
         <ul class="dropdown-menu nes-container mt-2 p-0 pt-2 rounded-0">
           <li><div class="dropdown-item nes-text is-success" onclick="view_toggleSpriteSheet(this,'spriteSheet')">Sprite Sheet</div></li>
           <li><div class="dropdown-item nes-text is-success" onclick="view_toggleSpriteSheet(this,'output')">Output</div></li>
-          <li><div class="dropdown-item">WIP ❌</div></li>
+          <li><div class="dropdown-item nes-text is-success" onclick="view_toggleSpriteSheet(this,'help')">Help Window</div></li>
+          <li><div class="dropdown-item nes-text is-success" onclick="view_toggleSpriteSheet(this,'utils')">Utils</div></li>
         </ul>
       </div>
     </div>
@@ -131,15 +142,23 @@
     </div>
   </div>
   <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-    <div>
-      <div class=" border border-4 border-dark position-relative" id="gridd" style="left: 0; top: 0;">
-
+    <div class="position-relative" id="grid-move" style="left: 0; top: 0;">
+      <div class="border border-4 border-dark position-absolute translate-middle" id="gridd">
+        
+      </div>
+      <div class="float-end position-absolute translate-middle" id="plusminusside" style="left: 0; top: 0;">
+        <p class="nes-pointer sink m-0 px-3" onclick="map_addCol()">+</p>
+        <p class="nes-pointer sink m-0 px-3" onclick="map_remCol()">-</p>
+      </div>
+      <div class="d-flex float-end position-absolute translate-middle" id="plusminusbottom" style="left: 0; top: 0;">
+        <p class="nes-pointer sink p-3" onclick="map_addRow()">+</p>
+        <p class="nes-pointer sink p-3" onclick="map_remRow()">-</p>
       </div>
     </div>
     
   </div>
 
-  <button class="nes-btn is-primary position-absolute bottom-0 end-0 m-4 p-2 " onclick="document.getElementById('gridd').classList.toggle('dogrid'); document.getElementById('imggrid').classList.toggle('dogrid')">Toggle Grid</button>
+  
   <p class="nes-text is-disabled position-absolute start-0 bottom-0 mb-0 m-2">Made by <a href="https://erikox.github.io" class="nes-text is-disabled">Eriko</a>. Used: <a href="https://getbootstrap.com/" class="nes-text is-disabled">Bootstrap</a> & <a href="https://nostalgic-css.github.io/NES.css/" class="nes-text is-disabled">Nes.css</a></p>
   <!-- Windows here -->
   <div class="dragme nes-container p-0 w-25 position-absolute overflow-auto bg-light" style="right: 3%; top: 50%" id="window_spriteSheet">
@@ -164,6 +183,25 @@
         <button class="nes-btn is-primary m-1" onclick="clipboardFromText('mapoutput')" >Copy</button>
       </div>
       <textarea class="card mt-1 nes-textarea" id="mapoutput"></textarea>
+    </div>
+  </div>
+  <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light w-25" style="right: 2%; top: 10%" id="window_help">
+    <div class="w-100 p-1 border-bottom border-4 border-dark blue-bg d-flex justify-content-between align-items-center" id="window_helpheader">
+      <div class="px-2">Help</div>
+    </div>
+    <div class="p-2">
+      <div>- Arrow Keys to move</div>
+      <div>- Tab Key to toggle letter-mode</div>
+      <div>- Hold on to the title of<br> windows to move them</div>
+      <div>- Disable/Enable windows in the View tab</div>
+    </div>
+  </div>
+  <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light w-auto" style="left:70%; top: 86%" id="window_utils">
+    <div class="w-100 p-1 border-bottom border-4 border-dark blue-bg d-flex justify-content-between align-items-center" id="window_utilsheader">
+      <div class="px-2">Utils</div>
+    </div>
+    <div class="p-2">
+      <button class="nes-btn is-primary p-2 " onclick="document.getElementById('gridd').classList.toggle('dogrid'); document.getElementById('imggrid').classList.toggle('dogrid')">Toggle Grid</button>
     </div>
   </div>
 
