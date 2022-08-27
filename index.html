@@ -106,7 +106,7 @@
         <ul class="dropdown-menu nes-container mt-2 p-0 pt-2 rounded-0">
           <li><div class="dropdown-item nes-text is-error" onclick="resetMapHtml()">Reset Map</div></li>
           <li><label><div class="dropdown-item" onclick="loadSpriteSheet()">Load Spritesheet</div><input type="file" name="file" id="spriteSheetInput" onchange="loadSpriteSheet(this)" class="d-none" accept="image/png"></label></li>
-          
+          <li><label><div class="dropdown-item" onclick="loadSpriteSheetExample()">Load Example Spritesheet</div></li>
         </ul>
       </div>
       <div><!-- File button-->
@@ -140,7 +140,7 @@
   </div>
 
   <button class="nes-btn is-primary position-absolute bottom-0 end-0 m-4 p-2 " onclick="document.getElementById('gridd').classList.toggle('dogrid'); document.getElementById('imggrid').classList.toggle('dogrid')">Toggle Grid</button>
-
+  <p class="nes-text is-disabled position-absolute start-0 bottom-0 mb-0 m-2">Made by <a href="https://erikox.github.io" class="nes-text is-disabled">Eriko</a>. Used: <a href="https://getbootstrap.com/" class="nes-text is-disabled">Bootstrap</a> & <a href="https://nostalgic-css.github.io/NES.css/" class="nes-text is-disabled">Nes.css</a></p>
   <!-- Windows here -->
   <div class="dragme nes-container p-0 w-25 position-absolute overflow-auto bg-light" style="right: 3%; top: 50%" id="window_spriteSheet">
     <div class="w-100 p-1 card-header border-bottom border-4 border-dark blue-bg d-flex justify-content-between align-items-center" id="window_spriteSheetheader">

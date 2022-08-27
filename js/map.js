@@ -82,6 +82,13 @@ function loadSpriteSheet(input) {
   reader.readAsDataURL(input.files[0])
 }
 
+function loadSpriteSheetExample() {
+  imggrid.innerHTML = ""
+
+  let img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA0lJREFUaIHtWb2K20AQHvvc3VVBjXAjBLrGrYuQwnCgOuUVeYBAmjzC1anvEVKmTC0IuI3ewCDcBBEjUiVFAsEpktGNxrO7s9q13OQDg9HuaGfnb79ZzW5X5RH+IUlz6NoGKJI07/93bSPOuaT87HZVHukkH2RFDvW2ginkUen1poT9runl52MXR0wln6Q5JOnfDVPMg1aPhKzIISv0G6GYm+JRCy6vVYTK19vqxLJaLGKFACqOitBY1ciPRVASA5xWBnyXlHQ2+bEIygG0OipBFTElnSQfsn7QBtCyNguid6RE1YSYa/2gHNBYsGsbWG/KQW7EQlbksIj2NsMCXdvAfvcU5zSkNJvJitzqqWhJLC2sOWVdSYweNG3ibAdZCMVA8NIsIUoV0j73nYdGMBkiuArZFp4Ks1dv3vV0mrK8/a4Ry57NanR8rLzv+rP//QBLVlfVcMn7rh+1H8gKN32wyY9BcBLTmETFQ5XyQXA/QK09RvHQ9edJmnt1RByXbkkHVQi5iZSAJk4Syuej9gPY2nGPYLXgiMHnXeO26DCyUUp9621ltFIMPm9C1zaD/DCV5j6EeC1HhLLJENgONRwXyyiv7SacO4RMNJ3KLegA5SJoWdtJGSOEJA9SPmW69TjZQL2t+ioUWttDIV3NmE53sQoB6BTnIYCe08IUQlL7aUK0njiUmHHw95iKzKAf4K7z5fOh8tp+gHrG2Q9waObw+YiL9AM2Zel9D30GoKtQMfqB2Yvy9dE91Z818vLnw6+08GrqTVZyWS/k6lwDdT8gJd96Uxo9g/Nt1yIAp559WB0GJI7+HlaHE3nV3aiJjaKC0ia05wkPNYAD1NsKHsubwbz3v54P5mHoqTxAlaEKIRWwwVU28eaargMA8Lb6PvjRMaT8+52BzHFQxXmfQMely1rN9wFpzmN5M/jx9+EmVNcq1G2calMyxokZ/2ojgXvwZfIDPnbX4lw+lqS5OwdoY8FDiIeH7fiXQL/wSMpSmDbl5EK+J+8Y0APx89efAFfXosI4hjIAZ/w+4CuP3vjy6QO0V88g/f1tMA+fLe/uAeCpCp31C40PeiJ3dw9LYXzJ5iGCNuDL/zXyPtTibN8HpkT07wNTy/8BaS6HD2GyS9MAAAAASUVORK5CYII="
+  handleSpriteSheet(img,16)
+}
+
 function handleSpriteSheet(src,px) {
   var image = new Image();
   image.onload = cutImageUp;
@@ -148,7 +155,39 @@ function deleteCell(cell,e) {
   
 }
 
+function generateMap(id) {
+  const textarea = document.getElementById(id)
+  const grid = document.getElementById("gridd")
+  const rows = grid.children
+  let output = "[\n\""
+  for (let x = 0; x < rows.length; x++) {
+    const row = rows[x]
+    const cols = row.children
+    let block = ""
+    for (let y = 0; y < cols.length; y++) {
+      const col = cols[y];
+      block+= col.id || " "
+      
+    }
+    output+=block+"\",\n\""
+  }
+  output = output.slice(0,-3)+"\n]"
+  textarea.value = output
+  textarea.style.height = (textarea.scrollHeight+15) + 'px';
+}
 
+function clipboardFromText(id) {
+  var copyText = document.getElementById(id);
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+
+  navigator.clipboard.writeText(copyText.value);
+
+  /* Alert the copied text */
+  alert("Copied output to clipboard");
+  
+}
 
 
 
