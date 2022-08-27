@@ -115,8 +115,8 @@
         <button class="nes-btn is-primary" data-bs-toggle="dropdown">File</button>
         <ul class="dropdown-menu nes-container mt-2 p-0 pt-2 rounded-0">
           <li><div class="dropdown-item nes-text is-error" onclick="resetMapHtml()">Reset Map</div></li>
-          <li><label><div class="dropdown-item" onclick="loadSpriteSheet()">Load Spritesheet</div><input type="file" name="file" id="spriteSheetInput" onchange="loadSpriteSheet(this)" class="d-none" accept="image/png"></label></li>
-          <li><label><div class="dropdown-item" onclick="loadSpriteSheetExample()">Load Example Spritesheet</div></li>
+          <li><label class="mb-0 w-100"><div class="dropdown-item" onclick="loadSpriteSheet()">Load Spritesheet</div><input type="file" name="file" id="spriteSheetInput" onchange="loadSpriteSheet(this)" class="d-none" accept="image/png"></label></li>
+          <li><div class="dropdown-item" onclick="loadSpriteSheetExample()">Load Example Spritesheet</div></li>
         </ul>
       </div>
       <div><!-- File button-->
@@ -143,16 +143,16 @@
   </div>
   <div class="w-100 h-100 d-flex justify-content-center align-items-center">
     <div class="position-relative" id="grid-move" style="left: 0; top: 0;">
-      <div class="border border-4 border-dark position-absolute translate-middle" id="gridd">
-        
+      <div class="border border-4 border-dark position-absolute translate-middle" style="transform-origin: 0% 0% 0px;zoom: 1;" id="gridd">
+        <!-- Grid here -->
       </div>
       <div class="float-end position-absolute translate-middle" id="plusminusside" style="left: 0; top: 0;">
-        <p class="nes-pointer sink m-0 px-3" onclick="map_addCol()">+</p>
-        <p class="nes-pointer sink m-0 px-3" onclick="map_remCol()">-</p>
+        <p class="nes-pointer sink m-0 px-3 user-select-none" onclick="map_addCol()">+</p>
+        <p class="nes-pointer sink m-0 px-3 user-select-none" onclick="map_remCol()">-</p>
       </div>
       <div class="d-flex float-end position-absolute translate-middle" id="plusminusbottom" style="left: 0; top: 0;">
-        <p class="nes-pointer sink p-3" onclick="map_addRow()">+</p>
-        <p class="nes-pointer sink p-3" onclick="map_remRow()">-</p>
+        <p class="nes-pointer sink p-3 user-select-none" onclick="map_addRow()">+</p>
+        <p class="nes-pointer sink p-3 user-select-none" onclick="map_remRow()">-</p>
       </div>
     </div>
     
@@ -169,7 +169,9 @@
       <p class="p-2">Load your spritesheet in File > Load Spritesheet</p>
       
     </div>
-    
+    <div id="imgletter" class="position-relative end-0 bottom-0 text-end m-1">
+      X
+    </div>
     
   </div>
   <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light" style="left: 2%; top: 50%" id="window_output">
@@ -201,7 +203,13 @@
       <div class="px-2">Utils</div>
     </div>
     <div class="p-2">
-      <button class="nes-btn is-primary p-2 " onclick="document.getElementById('gridd').classList.toggle('dogrid'); document.getElementById('imggrid').classList.toggle('dogrid')">Toggle Grid</button>
+      <div class="d-flex gap-2">
+        <button class="nes-btn is-primary p-2 " onclick="document.getElementById('gridd').classList.toggle('dogrid'); document.getElementById('imggrid').classList.toggle('dogrid')">Toggle Grid</button>
+        <button class="nes-btn p-2" onclick="zoom(1)">Zoom+</button>
+        <button class="nes-btn p-2" onclick="zoom(-1)">Zoom-</button>
+      </div>
+      
+
     </div>
   </div>
 

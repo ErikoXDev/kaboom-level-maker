@@ -1,6 +1,7 @@
 const container = document.getElementById("gridd")
 const moveable = document.getElementById("grid-move")
 const imggrid = document.getElementById("imggrid")
+const letters = "abcdefghijklmnopqrstuvwxyz1234567890"
 var selectedimg = null;
 var movex = 0;
 var movey = 0;
@@ -136,6 +137,8 @@ function handleSpriteSheet(src,px) {
         const url = imagePieces[i];
         let img = document.createElement("img")
         img.src = url
+        img.id = letters[i]
+        img.onmouseenter = function(e){hoverspritesheet(this)}
         img.onclick = function(){selectImage(this)}
         img.classList.add("pixelated","imgcell")
         imggrid.append(img)
@@ -146,6 +149,10 @@ function handleSpriteSheet(src,px) {
 
 function selectImage(img) {
   selectedimg = img
+}
+
+function hoverspritesheet(img) {
+  document.getElementById("imgletter").innerText = img.id
 }
 
 function touchedCell(cell) {
@@ -161,6 +168,7 @@ function touchedCell(cell) {
 function clickedCell(cell) {
   if (selectedimg != null) {
     cell.style.backgroundImage = "url('" + selectedimg.src + "')"
+    cell.id = selectedimg.id
   }
   
 }
@@ -171,6 +179,8 @@ function deleteCell(cell,e) {
 
 function generateMap(id) {
   const textarea = document.getElementById(id)
+  textarea.style.height = "0px"
+  textarea.value = ""
   const grid = document.getElementById("gridd")
   const rows = grid.children
   let output = "[\n\""

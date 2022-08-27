@@ -15,3 +15,29 @@ window.mobileCheck = function() {
 if (mobileCheck() && !localStorage.getItem("mobile")) {
   window.location.pathname = "/kaboom-level-maker/mobile.html"
 }
+
+var zoom_ = 1
+
+function zoom(change) {
+  console.log(change)
+  zoom_+=(change/10)
+  setZoom(zoom_,document.getElementById("grid-move"))
+}
+
+function setZoom(zoom,el) {
+      
+  transformOrigin = [0,0];
+  el = el || instance.getContainer();
+  var p = ["webkit", "moz", "ms", "o"],
+        s = "scale(" + zoom + ")",
+        oString = (transformOrigin[0] * 100) + "% " + (transformOrigin[1] * 100) + "%";
+
+  for (var i = 0; i < p.length; i++) {
+      el.style[p[i] + "Transform"] = s;
+      el.style[p[i] + "TransformOrigin"] = oString;
+  }
+
+  el.style["transform"] = s + "";
+  el.style["transformOrigin"] = oString;
+  
+}
