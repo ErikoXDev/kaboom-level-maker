@@ -6,8 +6,8 @@ var selectedimg = null;
 var movex = 0;
 var movey = 0;
 var mult = 3;
-var celltouch = false
-var placeMode = false;
+
+var placeMode = false
 var deleteMode = false
 document.body.addEventListener("keydown", function(e) {
   
@@ -30,10 +30,11 @@ document.body.addEventListener("keyup", function (e) {
 })
 
 document.body.addEventListener("mousedown", function(e) {
-  switch (e.button && celltouch){
+  switch (e.button){
     case 0: if(!deleteMode){placeMode=true}; break; 
     case 2: if(!placeMode){deleteMode=true}; break; 
   }
+  console.log(placeMode,deleteMode,celltouch,e.button,(e.button && celltouch))
 })
 
 document.body.addEventListener("mouseup", function(e) {
@@ -44,9 +45,59 @@ document.body.addEventListener("mouseup", function(e) {
   }
 })
 
+
+var celltouch = false
+
+function makeCell() {
+  let cell = document.createElement("div")
+  cell.innerHTML = " "
+  cell.id = " "
+  cell.classList.add("cell")
+  // For holding mouse button
+  cell.onmouseenter = function(){touchedCell(this);}
+  // Click once logic
+  cell.onmousedown = function(e){touchedCellOnce(this,e);}
+  return cell
+}
+
+function touchedCell(cell) {
+  celltouch = true
+  console.log("Touched cell " + cell.id)
+  if (placeMode) {
+    clickedCell(cell)
+  }
+  else if (deleteMode) {
+    deleteCell(cell)
+  }
+}
+
+function touchedCellOnce(cell,e) {
+  if (e.button == 0) {
+    clickedCell(cell)
+  } else if (e.button == 2) {
+    deleteCell(cell)
+  }
+}
+
+function clickedCell(cell) {
+  if (selectedimg != null) {
+    cell.style.backgroundImage = "url('" + selectedimg.src + "')"
+    cell.id = selectedimg.id
+  }
+  
+}
+function deleteCell(cell) {
+    cell.style.backgroundImage = ""
+    cell.id = " "
+}
+
+
+
 function resetMapHtml() {
   container.innerHTML = ""
   makeRows(10,10)
+  document.getElementById("mapoutput").value = ""
+  document.getElementById("mapoutput").style.height = (0+60) + 'px';
 }
 
 function makeRows(rows, cols) {
@@ -67,17 +118,6 @@ function makeRow(cols) {
     
   }
   return div
-}
-
-function makeCell() {
-  let cell = document.createElement("div")
-  cell.innerHTML = " "
-  cell.id = " "
-  cell.classList.add("cell")
-  cell.onmouseenter = function(){touchedCell(this);}
-  cell.onmousedown = function(){clickedCell(this);}
-  cell.oncontextmenu = function(e){e.preventDefault();deleteCell(this)}
-  return cell
 }
 
 resetMapHtml()
@@ -153,28 +193,6 @@ function selectImage(img) {
 
 function hoverspritesheet(img) {
   document.getElementById("imgletter").innerText = img.id
-}
-
-function touchedCell(cell) {
-  celltouch = true
-  if (placeMode) {
-    clickedCell(cell)
-  }
-  else if (deleteMode) {
-    deleteCell(cell)
-  }
-}
-
-function clickedCell(cell) {
-  if (selectedimg != null) {
-    cell.style.backgroundImage = "url('" + selectedimg.src + "')"
-    cell.id = selectedimg.id
-  }
-  
-}
-function deleteCell(cell,e) {
-    cell.style.backgroundImage = ""
-  
 }
 
 function generateMap(id) {
