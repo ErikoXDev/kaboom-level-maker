@@ -57,6 +57,7 @@ function makeCell() {
   cell.onmouseenter = function(){touchedCell(this);}
   // Click once logic
   cell.onmousedown = function(e){touchedCellOnce(this,e);}
+  cell.oncontextmenu = function(e){e.preventDefault()}
   return cell
 }
 
@@ -284,8 +285,8 @@ function loop() {
     moveable.style.left = String(parseInt(moveable.style.left)+movex)+"px"
     moveable.style.top = String(parseInt(moveable.style.top)+movey)+"px"
   }
-  addSide.style.left = container.offsetWidth/2+30 + "px"
-  addBottom.style.top = container.offsetHeight/2+30 + "px"
+  addSide.style.left = container.offsetWidth/2+50 + "px"
+  addBottom.style.top = container.offsetHeight/2+50 + "px"
   
   requestAnimationFrame(loop)
 }
