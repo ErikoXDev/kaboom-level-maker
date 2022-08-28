@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <script src="https://kit.fontawesome.com/bc069c4bd8.js" crossorigin="anonymous"></script>
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
   <link href="nes-copy.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
@@ -37,6 +37,13 @@
     --scaling: 100%;
   }
 
+  textarea,
+  pre {
+      -moz-tab-size : 2;
+        -o-tab-size : 2;
+          tab-size : 2;
+  }
+
   .grid {
     width: fit-content;
     display: grid;
@@ -54,6 +61,7 @@
   .cell {
     width: var(--scaling);
     height: var(--scaling);
+    background-color: white;
     padding: 1.5em;
     background-color: white;
     text-align: center;
@@ -75,7 +83,7 @@
     -ms-user-select: none;
   }
   .cell:hover {
-    filter:brightness(120%);
+    filter:brightness(85%);
   }
 
   .blue-bg {
@@ -108,14 +116,14 @@
     -ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
   }
 </style>
-<body class="m-0 h-100 overflow-hidden">
+<body class="m-0 h-100 overflow-hidden" spellcheck="false">
   <div class="d-flex justify-content-between gap-3 w-100 h-auto p-3 border-bottom border-4 border-dark position-absolute top-0 bg-light" style="z-index: 100;" id="_nav">
     <div class="d-flex gap-3">
       <div><!-- File button-->
         <button class="nes-btn is-primary" data-bs-toggle="dropdown">File</button>
         <ul class="dropdown-menu nes-container mt-2 p-0 pt-2 rounded-0">
           <li><div class="dropdown-item nes-text is-error" onclick="resetMapHtml()">Reset Map</div></li>
-          <li><label class="mb-0 w-100"><div class="dropdown-item" onclick="loadSpriteSheet()">Load Spritesheet</div><input type="file" name="file" id="spriteSheetInput" onchange="loadSpriteSheet(this)" class="d-none" accept="image/png"></label></li>
+          <li><label class="mb-0 w-100"><div class="dropdown-item">Load Spritesheet</div><input type="file" name="file" id="spriteSheetInput" onchange="loadSpriteSheet(this)" class="d-none" accept="image/png"></label></li>
           <li><div class="dropdown-item" onclick="loadSpriteSheetExample()">Load Example Spritesheet</div></li>
         </ul>
       </div>
@@ -123,11 +131,12 @@
         <button class="nes-btn is-primary" data-bs-toggle="dropdown">Settings</button>
         <ul class="dropdown-menu nes-container mt-2 p-0 pt-2 rounded-0">
           <li><div class="dropdown-item">joe mozilla</div></li>
-          <li><div class="dropdown-item">WIP</div></li>
+          <li><div class="dropdown-item-text">Block Size <input id="sBlockSize" type="number" class="" value="16"></div></li>
+          <li><div class="dropdown-item-text">Opt. Scale <input id="sScale" type="number" class="" value="1" step="0.1"></div></li>
           <li><div class="dropdown-item">WIP</div></li>
         </ul>
       </div>
-      <div><!-- File button-->
+      <div>
         <button class="nes-btn is-primary" data-bs-toggle="dropdown">View</button>
         <ul class="dropdown-menu nes-container mt-2 p-0 pt-2 rounded-0">
           <li><div class="dropdown-item nes-text is-success" onclick="view_toggleSpriteSheet(this,'spriteSheet')">Sprite Sheet</div></li>
@@ -138,7 +147,7 @@
       </div>
     </div>
     <div class="d-flex align-items-center px-2">
-      <a href="https://github.com/ErikoX" class="nes-icon github"></a>
+      <a href="https://github.com/ErikoX/kaboom-level-maker" class="nes-icon github"></a>
     </div>
   </div>
   <div class="w-100 h-100 d-flex justify-content-center align-items-center">
@@ -174,20 +183,20 @@
     </div>
     
   </div>
-  <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light" style="left: 2%; top: 50%" id="window_output">
+  <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light" style="width: 37%; left: 1%; top: 50%" id="window_output">
     <div class="w-100 p-1 border-bottom border-4 border-dark blue-bg d-flex justify-content-between align-items-center" id="window_outputheader">
       <div class="px-2">Output</div>
     </div>
     <div class="p-2">
       <div class="d-flex mb-3 justify-content-between">
         <button class="nes-btn is-primary m-1" onclick="generateMap('mapoutput');generateMap('mapoutput')">Generate</button>
-        <div class="m-1"></div>
+        <div class="m-1"><img src="" id="mapoutputimage" alt=""></div>
         <button class="nes-btn is-primary m-1" onclick="clipboardFromText('mapoutput')" >Copy</button>
       </div>
-      <textarea class="card mt-1 nes-textarea" id="mapoutput"></textarea>
+      <textarea class="card mt-1 nes-textarea" spellcheck="false" id="mapoutput"></textarea>
     </div>
   </div>
-  <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light w-25" style="right: 2%; top: 10%" id="window_help">
+  <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light w-25" style="left:74%; top: 12%" id="window_help">
     <div class="w-100 p-1 border-bottom border-4 border-dark blue-bg d-flex justify-content-between align-items-center" id="window_helpheader">
       <div class="px-2">Help</div>
     </div>
@@ -196,6 +205,7 @@
       <div>- Tab Key to toggle letter-mode</div>
       <div>- Hold on to the title of<br> windows to move them</div>
       <div>- Disable/Enable windows in the View tab</div>
+      <div>- Click on loaded images and on the grid to place them.</div>
     </div>
   </div>
   <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light w-auto" style="left:70%; top: 86%" id="window_utils">
