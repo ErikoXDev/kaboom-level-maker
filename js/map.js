@@ -220,8 +220,43 @@ function generateMap(id) {
   textarea.value = ""
   document.getElementById("mapoutputimage").src = mapConfig.imgSrc
   const grid = document.getElementById("gridd")
+  let output = ""
+  if (imggrid.children.length > 1) {
+    output += "//loadSprites logic\nloadSpriteAtlas(\"sprites/" + mapConfig.fileName + ".png\", {"
+    imgarr = []
+    let offset = 0
+    for (let y = 0; y < mapConfig.partsHeight; y++) {
+      let arr = []
+      for (let x = 0; x < mapConfig.partsWidth; x++) {
+        let ele = 0
+        ele+=x
+        ele+=offset
+          //?
+        arr.push(imggrid.children[ele])
+        
+      }
+      offset+=mapConfig.partsWidth
+      imgarr.push(arr)
+    }
+    console.log(imgarr)
+
+    let atlas = ""
+    for (let x = 0; x < mapConfig.partsWidth; x++) {
+      for (let y = 0; y < mapConfig.partsHeight; y++) {
+        let img = imgarr[y][x]
+        atlas += "\n\t\"" + mapConfig.fileName + "_" + img.id + "\": {\n\t\tx: " + x*document.getElementById("sBlockSize").value + ",\n\t\ty: " + y*document.getElementById("sBlockSize").value + ",\n\t\twidth: " + document.getElementById("sBlockSize").value + ",\n\t\theight: " + document.getElementById("sBlockSize").value + ",\n\t},"
+      }
+      
+    }
+    output += atlas.slice(0,-1)+"})\n"
+  }
+  
+  
+
+  // add level logic
   const rows = grid.children
-  let output = "//addLevel logic\naddLevel([\n\""
+  let begin = "\n//addLevel logic\naddLevel([\n\""
+  output += begin
   for (let x = 0; x < rows.length; x++) {
     const row = rows[x]
     const cols = row.children
@@ -233,55 +268,21 @@ function generateMap(id) {
     }
     output+=block+"\",\n\""
   }
-  output = output.slice(0,-3)+"\n]"
+  output = output.slice(0,-3)+",\n]"
+
+  // Add letters
   if (imggrid.children.length > 1) {
     output+=", {\n\twidth: " + mapConfig.blockSize + ",\n\theight: " + mapConfig.blockSize + ","
     let elements = ""
-    let atlas = ""
+    
     for (let i = 0; i < imggrid.children.length; i++) {
       const imgcell = imggrid.children[i];
       let symbol = imgcell.id
       elements += "\n\t\"" + symbol + "\": () => [\n\t\tsprite(\"" + mapConfig.fileName + "_" + imggrid.children[i].id + "\")," + ((document.getElementById("sScale").value != 1) ? "\n\t\tscale(" + document.getElementById("sScale").value + ")," : "") + "\n\t],"
     }
-    output += elements + "\n\t\" \": () => [\n\n\t]," +  "\n})\n\n//loadSprites logic\nloadSpriteAtlas(\"sprites/" + mapConfig.fileName + ".png\", {"
-    // for (let i = 0; i < imggrid.children.length; i++) {
-    //   const imgcell = imggrid.children[i];
-    //   let symbol = imgcell.id
-    // }
-
-    // make array of imagePieces
-    console.log(mapConfig.partsHeight,mapConfig.partsWidth)
-    imgarr = []
-    let offset = 0
-    for (let y = 0; y < mapConfig.partsHeight; y++) {
-      let arr = []
-      for (let x = 0; x < mapConfig.partsWidth; x++) {
-        let ele = 0
-        ele+=x
-        ele+=offset
-         //?
-        arr.push(imggrid.children[ele])
-        
-      }
-      offset+=mapConfig.partsWidth
-      imgarr.push(arr)
-    }
-    console.log(imgarr)
-
-    for (let x = 0; x < mapConfig.partsWidth; x++) {
-      for (let y = 0; y < mapConfig.partsHeight; y++) {
-        let img = imgarr[y][x]
-        atlas += "\n\t\"" + mapConfig.fileName + "_" + img.id + "\": {\n\t\tx: " + x*document.getElementById("sBlockSize").value + ",\n\t\ty: " + y*document.getElementById("sBlockSize").value + ",\n\t\twidth: " + document.getElementById("sBlockSize").value + ",\n\t\theight: " + document.getElementById("sBlockSize").value + ",\n\t},"
-        atlas += ""
-        atlas += ""
-        atlas += ""
-        atlas += ""
-        
-        
-      }
-      
-    }
-    output += atlas
+    output += elements + "\n\t\" \": () => ["+((document.getElementById("sScale").value != 1) ? "\n\t\tscale(" + document.getElementById("sScale").value + ")," : "\n\t\t")+"]," +  "\n})\n\n"
+    
+    
   }
   
   textarea.value = output
