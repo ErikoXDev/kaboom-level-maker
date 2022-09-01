@@ -303,7 +303,7 @@ function generateMap(id) {
       let symbol = imgcell.id
       elements += "\n\t\"" + symbol + "\": () => [\n\t\tsprite(\"" + mapConfig.fileName + "_" + imggrid.children[i].id + "\")," + "\n\t],"
     }
-    output += elements + "\n\t\" \": () => ["+((document.getElementById("sScale").value != 1) ? "\n\t\tscale(" + document.getElementById("sScale").value + ")," : "\n\t\t")+"]," +  "\n})\n\n"
+    output += elements + "\n\t\" \": () => ["+"]," +  "\n})\n\n"
     
     
   }
