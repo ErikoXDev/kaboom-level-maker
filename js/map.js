@@ -16,7 +16,9 @@ var mapConfig ={
   fileName: "",
   partsWidth: 0,
   partsHeight: 0,
-  imgSrc: ""
+  imgSrc: "",
+  imgSrcR: "",
+  px: 0
 }
 document.body.addEventListener("keydown", function(e) {
   
@@ -149,6 +151,20 @@ function loadSpriteSheet(input) {
 }
 
 
+function resizeImg(src) {
+  let ca = document.getElementById("imgCanvas")
+  ca.width = mapConfig.partsWidth*mapConfig.blockSize*parseInt(document.getElementById("sScale").value)
+  ca.height = mapConfig.partsHeight*mapConfig.blockSize*parseInt(document.getElementById("sScale").value)
+  let ctx = ca.getContext("2d")
+  ctx.imageSmoothingEnabled = false
+  ctx.clearRect(0,0,1000,1000)
+  let image = new Image()
+  image.src = mapConfig.imgSrc
+  console.log(mapConfig.blockSize,mapConfig.partsWidth,mapConfig.partsHeight,document.getElementById("sScale").value)
+  console.log(image,0,0,mapConfig.blockSize*parseInt(document.getElementById("sScale").value)*mapConfig.partsWidth,mapConfig.blockSize*parseInt(document.getElementById("sScale").value)*mapConfig.partsHeight)
+  ctx.drawImage(image,0,0,mapConfig.blockSize*parseInt(document.getElementById("sScale").value)*mapConfig.partsWidth,mapConfig.blockSize*parseInt(document.getElementById("sScale").value)*mapConfig.partsHeight)
+  return ca.toDataURL("image/png")
+}
 
 function loadSpriteSheetExample() {
   imggrid.innerHTML = ""
@@ -161,7 +177,9 @@ function handleSpriteSheet(src,px) {
   var image = new Image();
   image.onload = cutImageUp;
   image.src = src;
+  mapConfig.px = px
   mapConfig.imgSrc = src
+  
 
   function cutImageUp() {
       
@@ -182,6 +200,7 @@ function handleSpriteSheet(src,px) {
               canvas.width = widthOfOnePiece;
               canvas.height = heightOfOnePiece;
               var context = canvas.getContext('2d');
+              context.clearRect(0,0,1000,1000)
               context.drawImage(image, y * widthOfOnePiece, x * heightOfOnePiece, widthOfOnePiece, heightOfOnePiece, 0, 0, canvas.width, canvas.height);
               imagePieces.push(canvas.toDataURL());
           }
@@ -192,6 +211,7 @@ function handleSpriteSheet(src,px) {
       // load one piece onto the page
       
       //anImageElement.src = imagePieces[0];
+      
       for (let i = 0; i < imagePieces.length; i++) {
         const url = imagePieces[i];
         let img = document.createElement("img")
@@ -214,11 +234,14 @@ function hoverspritesheet(img) {
   document.getElementById("imgletter").innerText = img.id
 }
 
+
 function generateMap(id) {
   const textarea = document.getElementById(id)
   textarea.style.height = "0px"
   textarea.value = ""
-  document.getElementById("mapoutputimage").src = mapConfig.imgSrc
+  mapConfig.imgSrcR = resizeImg(mapConfig.imgSrc)
+  document.getElementById("mapoutputimage").src = mapConfig.imgSrcR
+  console.log(mapConfig.imgSrcR)
   const grid = document.getElementById("gridd")
   let output = ""
   if (imggrid.children.length > 1) {

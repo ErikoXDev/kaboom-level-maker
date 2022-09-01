@@ -44,6 +44,17 @@
           tab-size : 2;
   }
 
+  img { 
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated; /* Chrome */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+
+  }
+
   .grid {
     width: fit-content;
     display: grid;
@@ -190,10 +201,14 @@
     <div class="p-2">
       <div class="d-flex mb-3 justify-content-between">
         <button class="nes-btn is-primary m-1" onclick="generateMap('mapoutput');generateMap('mapoutput')">Generate</button>
-        <div class="m-1"><img src="" id="mapoutputimage" alt=""></div>
+        <div class="m-1"></div>
+        <button class="nes-btn is-primary m-1" onclick="downloadURI(document.getElementById('mapoutputimage').src || 'data:,', mapConfig.fileName + '.png')">Download Image</button>
+        <div class="m-1"></div>
         <button class="nes-btn is-primary m-1" onclick="clipboardFromText('mapoutput')" >Copy</button>
       </div>
       <textarea class="card mt-1 nes-textarea" spellcheck="false" id="mapoutput"></textarea>
+      <div class="d-flex justify-content-center"><canvas id="imgCanvas" class="d-none" width="0" height="0"></canvas><img src="" alt="" class="pixelated m-1" id="mapoutputimage"></div>
+      
     </div>
   </div>
   <div class="dragme nes-container p-0 position-absolute overflow-auto bg-light w-25" style="left:74%; top: 12%" id="window_help">
@@ -232,4 +247,5 @@
 <canvas id="spriteSheetCanvas" class="d-none">
 
 </canvas>
+
 </html>
