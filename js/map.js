@@ -213,10 +213,17 @@ function handleSpriteSheet(src,px) {
       //anImageElement.src = imagePieces[0];
       
       for (let i = 0; i < imagePieces.length; i++) {
+        if (!letters[i]) {
+          alert("Spritesheet too large!")
+          imggrid.innerHTML=""
+          return
+        }
         const url = imagePieces[i];
         let img = document.createElement("img")
         img.src = url
         img.id = letters[i]
+        
+        
         img.onmouseenter = function(e){hoverspritesheet(this)}
         img.onclick = function(){selectImage(this)}
         img.classList.add("pixelated","imgcell")
