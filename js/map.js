@@ -234,7 +234,7 @@ function hoverspritesheet(img) {
   document.getElementById("imgletter").innerText = img.id
 }
 
-
+// This section of code is left as an excercise for the reader.
 function generateMap(id) {
   const textarea = document.getElementById(id)
   textarea.style.height = "0px"
@@ -301,7 +301,7 @@ function generateMap(id) {
     for (let i = 0; i < imggrid.children.length; i++) {
       const imgcell = imggrid.children[i];
       let symbol = imgcell.id
-      elements += "\n\t\"" + symbol + "\": () => [\n\t\tsprite(\"" + mapConfig.fileName + "_" + imggrid.children[i].id + "\")," + ((document.getElementById("sScale").value != 1) ? "\n\t\tscale(" + document.getElementById("sScale").value + ")," : "") + "\n\t],"
+      elements += "\n\t\"" + symbol + "\": () => [\n\t\tsprite(\"" + mapConfig.fileName + "_" + imggrid.children[i].id + "\")," + "\n\t],"
     }
     output += elements + "\n\t\" \": () => ["+((document.getElementById("sScale").value != 1) ? "\n\t\tscale(" + document.getElementById("sScale").value + ")," : "\n\t\t")+"]," +  "\n})\n\n"
     
